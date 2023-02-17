@@ -5,6 +5,7 @@ import com.neusta.rest.response.EmployeeDto;
 import com.neusta.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +72,25 @@ public class EmployeeController {
         log.info("Employee updated with id: " + employee_id);
         outputInfo.put("message","Employee updated with id: " + employee_id);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getEmployeeByProgrammingLanguage")
+    ResponseEntity <List<EmployeeDto>>  filterEmployeesByProgrammingLanguage (@Param("programming_language") String programming_language,
+                                                                              @Param("amountOfExperience") int amountOfExperience,
+                                                                              @Param("status") String status) {
+        log.info("Employees found with programming language: " + programming_language +" and experience " + amountOfExperience);
+        List<EmployeeDto>  employeeDtoList = employeeService.findEmployeesByProgrammingLanguage(programming_language, amountOfExperience, status);
+        return new ResponseEntity<>(employeeDtoList,HttpStatus.FOUND);
+    }
+
+    @PostMapping("/addProgrammingLanguageToEmployee/{employee_id}")
+    ResponseEntity<Map<String,String>> addProgrammingLanguageToEmployee (@PathVariable(value = "employee_id") long employee_id,
+                                                                         @Param("programming_language") String programming_language,
+                                                                         @Param("amountOfExperience") int amountOfExperience ) {
+        Map<String,String> outputInfo = new HashMap<>();
+        employeeService.addCapability(employee_id, programming_language, amountOfExperience);
+        log.info("Programming language added to employee with id: " + employee_id);
+        outputInfo.put("message", "Programming language added to employee with id: " + employee_id);
+        return  new ResponseEntity<>(outputInfo, HttpStatus.CREATED);
     }
 }

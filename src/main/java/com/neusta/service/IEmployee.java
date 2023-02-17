@@ -14,4 +14,6 @@ public interface IEmployee {
 
     void deleteEmployeeById(long employee_id);
     void updateEmployee(EmployeeDto employeeDto, long employee_id);
+    List<EmployeeDto> findEmployeesByProgrammingLanguage(String programming_language, int amountOfExperience, String status);
+    void addCapability(long employee_id, String programming_language, int amountOfExperience);
 }

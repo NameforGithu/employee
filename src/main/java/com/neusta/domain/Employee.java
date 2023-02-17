@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -30,6 +33,13 @@ public class Employee {
     private String email;
     @Column(name = "mobile", unique = true, nullable = false, length = 30)
     private String mobile;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "employee_programming_languages",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "programming_language_id"))
+    List<ProgrammingLanguage> programmingLanguages = new ArrayList<>();
+
 }
 
 

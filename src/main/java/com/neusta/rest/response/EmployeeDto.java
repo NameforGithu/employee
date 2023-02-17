@@ -1,5 +1,7 @@
 package com.neusta.rest.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.neusta.domain.ProgrammingLanguage;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,4 +34,9 @@ public class EmployeeDto {
 
     @Column(name = "mobile", nullable = false, length = 30)
     private String mobile;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime creationTime;
+
+    @Column(name = "programming_languages")
+    List<ProgrammingLanguage> programmingLanguages;
 }

@@ -1,6 +1,7 @@
 package com.neusta.service;
 
 import com.neusta.domain.Employee;
+import com.neusta.domain.ProgrammingLanguage;
 import com.neusta.mapper.EmployeeMapper;
 import com.neusta.repo.EmployeeRepository;
 import com.neusta.rest.response.EmployeeDto;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService implements IEmployee {
@@ -59,5 +61,25 @@ public class EmployeeService implements IEmployee {
             employee.setMobile(employeeDto.getMobile());
             employeeRepository.save(employee);
         }
+    }
+
+    @Override
+    public List<EmployeeDto> findEmployeesByProgrammingLanguage(String programming_language, int amountOfExperience, String status) {
+        List<EmployeeDto> employeeDtos = findAllEmployees();
+        return employeeDtos.stream()
+                .filter(Employee ->
+                        Employee.getProgrammingLanguages().stream()
+                                .anyMatch(ProgrammingLanguage ->
+                                        ProgrammingLanguage.getProgrammingLanguage().equalsIgnoreCase(programming_language)))
+                .filter(Employee -> Employee.getProgrammingLanguages().stream()
+                        .anyMatch(ProgrammingLanguage -> ProgrammingLanguage.getWorkExperience() >= amountOfExperience))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public void addCapability(long employee_id, String programming_language, int amountOfExperience) {
+        Employee employee = employeeRepository.findById(employee_id)
+                .orElseThrow(()-> new RuntimeException("Employee not found"));
+        employee.getProgrammingLanguages().add(new ProgrammingLanguage(programming_language,amountOfExperience));
+        employeeRepository.save(employee);
     }
 }
