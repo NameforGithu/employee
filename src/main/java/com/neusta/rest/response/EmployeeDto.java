@@ -1,6 +1,7 @@
 package com.neusta.rest.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.neusta.domain.Framework;
 import com.neusta.domain.ProgrammingLanguage;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -39,4 +40,6 @@ public class EmployeeDto {
 
     @Column(name = "programming_languages")
     List<ProgrammingLanguage> programmingLanguages;
+    @Column(name = "framework")
+    List<Framework> frameworks;
 }

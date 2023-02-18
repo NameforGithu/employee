@@ -25,19 +25,19 @@ public class EmployeeService implements IEmployee {
     }
 
     @Override
-    public Long createEmployee (EmployeeDto empolyeeDto){
+    public Long createEmployee(EmployeeDto empolyeeDto) {
         Employee employee = employeeRepository.save(employeeMapper.convertToEmployee(empolyeeDto));
         return employee.getId();
     }
 
     @Override
     public EmployeeDto findEmployeeById(long employee_id) {
-        Employee employee = employeeRepository.findById(employee_id).orElseThrow(()-> new RuntimeException("Employee not found"));
+        Employee employee = employeeRepository.findById(employee_id).orElseThrow(() -> new RuntimeException("Employee not found"));
         return employeeMapper.convertToEmployeeDto(employee);
     }
 
     @Override
-    public List<EmployeeDto> findAllEmployees (){
+    public List<EmployeeDto> findAllEmployees() {
         return employeeMapper.convertTOListOfEmployeeMapper(employeeRepository.findAll());
     }
 
@@ -45,7 +45,7 @@ public class EmployeeService implements IEmployee {
     @Transactional
     public void deleteEmployeeById(long employee_id) {
         Employee employee = employeeMapper.convertToEmployee(findEmployeeById(employee_id));
-        if (employee != null){
+        if (employee != null) {
             employeeRepository.deleteById(employee_id);
         }
     }
@@ -53,7 +53,7 @@ public class EmployeeService implements IEmployee {
     @Override
     public void updateEmployee(EmployeeDto employeeDto, long employee_id) {
         Employee employee = employeeMapper.convertToEmployee(findEmployeeById(employee_id));
-        if (employee!=null){
+        if (employee != null) {
             employee.setFirstname(employeeDto.getFirstname());
             employee.setLastname(employeeDto.getLastname());
             employee.setEmail(employeeDto.getEmail());
@@ -75,11 +75,29 @@ public class EmployeeService implements IEmployee {
                         .anyMatch(ProgrammingLanguage -> ProgrammingLanguage.getWorkExperience() >= amountOfExperience))
                 .collect(Collectors.toList());
     }
+
     @Override
     public void addCapability(long employee_id, String programming_language, int amountOfExperience) {
         Employee employee = employeeRepository.findById(employee_id)
-                .orElseThrow(()-> new RuntimeException("Employee not found"));
-        employee.getProgrammingLanguages().add(new ProgrammingLanguage(programming_language,amountOfExperience));
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+        employee.getProgrammingLanguages().add(new ProgrammingLanguage(programming_language, amountOfExperience));
         employeeRepository.save(employee);
+    }
+
+    @Override
+    public List<EmployeeDto> filterEmployeesByFramework(String framework, int amountOfExperience, String status) {
+        List<EmployeeDto> employeeDtos = findAllEmployees();
+        boolean isFree;
+        isFree = status.equalsIgnoreCase("free");
+
+        return employeeDtos.stream()
+                .filter(Employee ->
+                        Employee.getFrameworks().stream()
+                                .anyMatch(Framework -> Framework.getFramework().equalsIgnoreCase(framework)))
+                .filter(Employee ->
+                        Employee.getFrameworks().stream()
+                                .anyMatch(Framework -> Framework.getWorkExperience() >= amountOfExperience))
+
+                .collect(Collectors.toList());
     }
 }

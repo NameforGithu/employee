@@ -93,4 +93,12 @@ public class EmployeeController {
         outputInfo.put("message", "Programming language added to employee with id: " + employee_id);
         return  new ResponseEntity<>(outputInfo, HttpStatus.CREATED);
     }
+
+    @GetMapping("/getEmployeesByFramework")
+    ResponseEntity<List<EmployeeDto>> filterEmployeesByFramework (@Param("framework") String framework,
+                                                                  @Param("amountOfExperience") int amountOfExperience,
+                                                                  @Param("status") String status) {
+        List<EmployeeDto> employeeDtoList = employeeService.filterEmployeesByFramework(framework, amountOfExperience, status);
+        return  new ResponseEntity<>(employeeDtoList,HttpStatus.FOUND);
+    }
 }
