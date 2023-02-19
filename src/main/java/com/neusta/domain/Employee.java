@@ -40,6 +40,8 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "programming_language_id"))
     List<ProgrammingLanguage> programmingLanguages = new ArrayList<>();
 
+    @Column(name = "employee_status")
+    private Boolean isFree = true;
 }
 
 

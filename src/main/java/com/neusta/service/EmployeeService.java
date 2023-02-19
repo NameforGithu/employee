@@ -1,5 +1,6 @@
 package com.neusta.service;
 
+import com.neusta.config.State;
 import com.neusta.domain.Employee;
 import com.neusta.domain.ProgrammingLanguage;
 import com.neusta.mapper.EmployeeMapper;
@@ -99,5 +100,15 @@ public class EmployeeService implements IEmployee {
                                 .anyMatch(Framework -> Framework.getWorkExperience() >= amountOfExperience))
 
                 .collect(Collectors.toList());
+    }
+    @Override
+    public void changeStatusOfEmployee(long employee_id, String status) {
+        Employee employee = employeeMapper.convertToEmployee(findEmployeeById(employee_id));
+        State userState = State.valueOf(status.toUpperCase());
+        if (userState == State.FREE)
+            employee.setIsFree(true);
+        if (userState == State.BUSY)
+            employee.setIsFree(false);
+        employeeRepository.save(employee);
     }
 }

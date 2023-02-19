@@ -101,4 +101,13 @@ public class EmployeeController {
         List<EmployeeDto> employeeDtoList = employeeService.filterEmployeesByFramework(framework, amountOfExperience, status);
         return  new ResponseEntity<>(employeeDtoList,HttpStatus.FOUND);
     }
+    @PutMapping("/changeStatusOfEmployee/{employee_id}")
+    ResponseEntity<Map<String,String>> changeStatusOfEmployee (@PathVariable (value = "employee_id") long employee_id,
+                                                               @Param("status") String status) {
+        Map<String, String> outputInfo = new HashMap<>();
+        employeeService.changeStatusOfEmployee(employee_id,status);
+        log.info("Status of employee with id " + employee_id + " changes to : " + status);
+        outputInfo.put("message", "Status of employee with id " + employee_id + " changes to : " + status);
+        return new ResponseEntity<>(outputInfo, HttpStatus.OK);
+    }
 }

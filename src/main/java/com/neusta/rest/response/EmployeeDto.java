@@ -42,4 +42,16 @@ public class EmployeeDto {
     List<ProgrammingLanguage> programmingLanguages;
     @Column(name = "framework")
     List<Framework> frameworks;
+
+    @Column(name = "employee_status")
+    private boolean isFree = true;
+
+    public boolean getIsFree() {
+        return isFree;
+    }
+
+    public void setIsFree(boolean free) {
+        isFree = free;
+    }
+
 }
