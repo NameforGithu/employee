@@ -18,4 +18,5 @@ public interface IEmployee {
     void addCapability(long employee_id, String programming_language, int amountOfExperience);
     List<EmployeeDto> filterEmployeesByFramework(String framework, int amountOfExperience, String status);
     void changeStatusOfEmployee(long employee_id, String filter);
+    List<EmployeeDto> filterEmployeesByStatus(String filter);
 }

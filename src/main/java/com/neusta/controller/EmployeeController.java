@@ -110,4 +110,11 @@ public class EmployeeController {
         outputInfo.put("message", "Status of employee with id " + employee_id + " changes to : " + status);
         return new ResponseEntity<>(outputInfo, HttpStatus.OK);
     }
+
+    @GetMapping("/filterEmployeesByStatus/{filter}")
+    ResponseEntity <List<EmployeeDto>> filterEmployeesByStatus(@PathVariable(value = "filter") String filter){
+        List<EmployeeDto> employeeDtos = employeeService.filterEmployeesByStatus(filter);
+        log.info("Employee found with status: " + filter);
+        return  new ResponseEntity<>(employeeDtos, HttpStatus.FOUND);
+    }
 }

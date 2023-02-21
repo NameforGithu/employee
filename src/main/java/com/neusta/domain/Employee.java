@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,15 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "programming_language_id"))
     List<ProgrammingLanguage> programmingLanguages = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable (name = "employee_frameworks",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "framework_id"))
+    List<Framework> frameworks = new ArrayList<>();
+
+    @Column(name = "creation_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private LocalDateTime creationTime;
 
     @Column(name = "employee_status")
     private Boolean isFree = true;

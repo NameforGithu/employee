@@ -111,4 +111,23 @@ public class EmployeeService implements IEmployee {
             employee.setIsFree(false);
         employeeRepository.save(employee);
     }
+    @Override
+    public List<EmployeeDto> filterEmployeesByStatus(String filter) {
+        List<EmployeeDto> employees = findAllEmployees();
+        State userState = State.valueOf(filter.toUpperCase());
+
+        if(employees != null && !employees.isEmpty()){
+            if (userState == State.FREE){
+                return employees.stream()
+                        .filter(EmployeeDto::getIsFree)
+                        .collect(Collectors.toList());
+            }
+            if (userState == State.BUSY){
+                return employees.stream()
+                        .filter(employeeDto -> !employeeDto.getIsFree())
+                        .collect(Collectors.toList());
+            }
+        }
+        return null;
+    }
 }
