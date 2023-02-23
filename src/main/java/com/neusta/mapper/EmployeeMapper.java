@@ -7,6 +7,8 @@ import com.neusta.rest.response.EmployeeDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class EmployeeMapper {
 
     public Employee convertToEmployee(EmployeeDto employeeDto){
         Employee newEmployee = modelMapper.map(employeeDto, Employee.class);
+        newEmployee.setCreationTime(LocalDateTime.now());
         return newEmployee;
     }
 

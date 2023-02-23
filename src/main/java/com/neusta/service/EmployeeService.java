@@ -67,6 +67,8 @@ public class EmployeeService implements IEmployee {
     @Override
     public List<EmployeeDto> findEmployeesByProgrammingLanguage(String programming_language, int amountOfExperience, String status) {
         List<EmployeeDto> employeeDtos = findAllEmployees();
+        boolean isFree;
+        isFree = status.equalsIgnoreCase("free");
         return employeeDtos.stream()
                 .filter(Employee ->
                         Employee.getProgrammingLanguages().stream()
@@ -74,6 +76,7 @@ public class EmployeeService implements IEmployee {
                                         ProgrammingLanguage.getProgrammingLanguage().equalsIgnoreCase(programming_language)))
                 .filter(Employee -> Employee.getProgrammingLanguages().stream()
                         .anyMatch(ProgrammingLanguage -> ProgrammingLanguage.getWorkExperience() >= amountOfExperience))
+                .filter(Employee -> Employee.getIsFree() == isFree)
                 .collect(Collectors.toList());
     }
 
@@ -98,7 +101,8 @@ public class EmployeeService implements IEmployee {
                 .filter(Employee ->
                         Employee.getFrameworks().stream()
                                 .anyMatch(Framework -> Framework.getWorkExperience() >= amountOfExperience))
-
+                .filter(Employee ->
+                        Employee.getIsFree() == isFree)
                 .collect(Collectors.toList());
     }
     @Override
