@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +32,22 @@ public class Employee {
     private String lastname;
     @Column(name = "username", unique = true, nullable = false, length = 30)
     private String username;
+    @Column(name = "birthday")
+    private LocalDate birthday;
     @Column(name = "email", unique = true, nullable = false, length = 30)
     private String email;
     @Column(name = "mobile", unique = true, nullable = false, length = 30)
     private String mobile;
-
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int troubleshooting;
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int flexibility;
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int creativity;
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int teamwork;
+    @OneToMany(cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
+    private List <ForeignLanguages> foreignLanguages;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "employee_programming_languages",
             joinColumns = @JoinColumn(name = "employee_id"),

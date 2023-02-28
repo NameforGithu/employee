@@ -1,12 +1,13 @@
 package com.neusta.service;
 
+import com.neusta.domain.Employee;
 import com.neusta.rest.response.EmployeeDto;
 
 import java.util.List;
 
 public interface IEmployee {
 
-    Long createEmployee (EmployeeDto empolyeeDto);
+    Employee createEmployee (EmployeeDto employeeDto);
 
     EmployeeDto findEmployeeById(long employee_id);
 

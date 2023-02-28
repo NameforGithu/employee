@@ -1,6 +1,7 @@
 package com.neusta.rest.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.neusta.domain.ForeignLanguages;
 import com.neusta.domain.Framework;
 import com.neusta.domain.ProgrammingLanguage;
 import jakarta.persistence.Column;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,7 +44,15 @@ public class EmployeeDto {
     List<ProgrammingLanguage> programmingLanguages;
     @Column(name = "framework")
     List<Framework> frameworks;
-
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int troubleshooting;
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int flexibility;
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int creativity;
+    @Size(min = 1, max = 5, message = "Rating must be between 1 and 5")
+    private int teamwork;
+    private List <ForeignLanguages> foreignLanguages;
     @Column(name = "employee_status")
     private boolean isFree = true;
 

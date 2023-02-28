@@ -26,9 +26,9 @@ public class EmployeeService implements IEmployee {
     }
 
     @Override
-    public Long createEmployee(EmployeeDto empolyeeDto) {
-        Employee employee = employeeRepository.save(employeeMapper.convertToEmployee(empolyeeDto));
-        return employee.getId();
+    public Employee createEmployee (EmployeeDto employeeDto){
+        Employee employee = employeeRepository.save(employeeMapper.convertToEmployee(employeeDto));
+        return employee;
     }
 
     @Override

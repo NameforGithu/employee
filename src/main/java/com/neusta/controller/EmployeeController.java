@@ -1,5 +1,6 @@
 package com.neusta.controller;
 
+import com.neusta.domain.Employee;
 import com.neusta.repo.EmployeeRepository;
 import com.neusta.rest.response.EmployeeDto;
 import com.neusta.service.EmployeeService;
@@ -32,9 +33,9 @@ public class EmployeeController {
     @PostMapping("/createEmployee")
     ResponseEntity<Map<String,String>> createEmployee (@RequestBody EmployeeDto employeeDto){
         Map<String,String> outputInfo = new HashMap<>();
-        Long employee_id = employeeService.createEmployee(employeeDto);
-        log.info("Employee created with id " + employee_id);
-        outputInfo.put("message", "Employee created with id " + employee_id);
+        Employee employee = employeeService.createEmployee(employeeDto);
+        log.info("Employee created with id " + employee);
+        outputInfo.put("message", "Employee created with id " + employee);
         return new ResponseEntity<>(outputInfo, HttpStatus.CREATED);
     }
 
