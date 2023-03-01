@@ -60,6 +60,12 @@ public class EmployeeService implements IEmployee {
             employee.setEmail(employeeDto.getEmail());
             employee.setUsername(employeeDto.getUsername());
             employee.setMobile(employeeDto.getMobile());
+            employee.setCreativity(employeeDto.getCreativity());
+            employee.setFlexibility(employeeDto.getFlexibility());
+            //employee.setBirthday(employeeDto.getBirthday());
+            employee.setTeamwork(employeeDto.getTeamwork());
+            employee.setTroubleshooting(employeeDto.getTroubleshooting());
+            employee.setForeignLanguages(employeeDto.getForeignLanguages());
             employeeRepository.save(employee);
         }
     }
