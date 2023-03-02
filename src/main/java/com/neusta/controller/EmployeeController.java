@@ -1,6 +1,7 @@
 package com.neusta.controller;
 
 import com.neusta.domain.Employee;
+import com.neusta.mapper.EmployeeMapper;
 import com.neusta.repo.EmployeeRepository;
 import com.neusta.rest.response.EmployeeDto;
 import com.neusta.service.EmployeeService;
@@ -20,14 +21,15 @@ import java.util.Map;
 @RequestMapping("/api/employee")
 public class EmployeeController {
     private final EmployeeRepository employeeRepository;
-
     private final EmployeeService employeeService;
+    private final EmployeeMapper employeeMapper;
 
     @Autowired
     public EmployeeController(EmployeeService employeeService,
-                              EmployeeRepository employeeRepository) {
+                              EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {
         this.employeeService = employeeService;
         this.employeeRepository = employeeRepository;
+        this.employeeMapper = employeeMapper;
     }
 
     @PostMapping("/createEmployee")
@@ -42,7 +44,7 @@ public class EmployeeController {
 
     @GetMapping("/getEmployee/{employee_id}")
     ResponseEntity <EmployeeDto> findEmployeeById(@PathVariable (value = "employee_id") long employee_id){
-        EmployeeDto employeeDto = employeeService.findEmployeeById(employee_id);
+        EmployeeDto employeeDto = employeeMapper.convertToEmployeeDto(employeeService.findEmployeeById(employee_id));
         log.info("Employee found with id " + employee_id);
         return new ResponseEntity<>(employeeDto, HttpStatus.FOUND);
     }

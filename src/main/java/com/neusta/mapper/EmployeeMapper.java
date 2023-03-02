@@ -37,7 +37,7 @@ public class EmployeeMapper {
     }
 
 
-    public List<EmployeeDto> convertTOListOfEmployeeMapper (List<Employee> listOfEmployees){
+    public List<EmployeeDto> convertTOListOfEmployeeDtoMapper(List<Employee> listOfEmployees) { // TODO: Der richtige Name: convertTOListOfEmployeeDtoMapper 10
 
         EmployeeDto employeeDto;
 
