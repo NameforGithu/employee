@@ -20,4 +20,8 @@ public class Framework {
     private String framework;
     @Column(name = "work_experience")
     private int workExperience;
+    public Framework(String framework, int workExperience) {
+        this.framework = framework;
+        this.workExperience = workExperience;
+    }
 }

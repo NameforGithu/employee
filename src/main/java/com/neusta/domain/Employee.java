@@ -2,10 +2,7 @@ package com.neusta.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -19,6 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "Employees")
+@Builder
 public class Employee {
 
     @Id

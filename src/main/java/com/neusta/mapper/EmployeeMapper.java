@@ -16,13 +16,16 @@ import java.util.List;
 public class EmployeeMapper {
 
     private final ModelMapper modelMapper;
+    /*
     private final EmployeeRepository employeeRepository;
+
+     */
 
     @Autowired
     public EmployeeMapper(ModelMapper modelMapper,
                           EmployeeRepository employeeRepository) {
         this.modelMapper = modelMapper;
-        this.employeeRepository = employeeRepository;
+        //this.employeeRepository = employeeRepository;
     }
 
     public Employee convertToEmployee(EmployeeDto employeeDto){
@@ -37,7 +40,7 @@ public class EmployeeMapper {
     }
 
 
-    public List<EmployeeDto> convertTOListOfEmployeeDtoMapper(List<Employee> listOfEmployees) { // TODO: Der richtige Name: convertTOListOfEmployeeDtoMapper 10
+    public List<EmployeeDto> convertTOListOfEmployeeDtoMapper(List<Employee> listOfEmployees) {
 
         EmployeeDto employeeDto;
 
