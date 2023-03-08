@@ -20,8 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -59,6 +58,7 @@ public class EmployeeServiceTest {
                 .isFree(status)
                 .build();
     }
+
     public List<EmployeeDto> employeeDtoList (){
         List<EmployeeDto> employees = new ArrayList<>();
         employees.add(getEmployeeDto());
@@ -97,6 +97,7 @@ public class EmployeeServiceTest {
         employeeDto.setIsFree(true);
         return employeeDto;
     }
+
     @Test
     void createEmployee() {
         when(mockEmployeeRepository.save(any())).thenReturn(getEmployee());
@@ -126,5 +127,68 @@ public class EmployeeServiceTest {
         when(mockEmployeeRepository.findAll()).thenReturn(getListOfEmployee());
         when(mockEmployeeMapper.convertTOListOfEmployeeDtoMapper(any())).thenReturn(employeeDtoList());
         assertEquals(getListOfEmployee().size(), 3);
+    }
+    @Test
+    void givenEmployeeId_whenDeleteEmployeeById_IdFound_thenEmployeeDeleteCorrectly() {
+        when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(getEmployee()));
+        Employee employee = getEmployee();
+        when(mockEmployeeRepository.save(any())).thenReturn(employee);
+        employeeService.deleteEmployeeById(7L);
+        assertFalse(mockEmployeeRepository.existsById(9L));
+    }
+
+    @Test
+    void givenEmployeeId_whenDeleteEmployeeById_IdNotFound_thenEmployeeNoDelete(){
+        when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(null));
+        assertThrows(RuntimeException.class, ()-> employeeService.deleteEmployeeById(9L));
+    }
+
+    @Test
+    void updateEmployee() {
+        when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(getEmployee()));
+        when(mockEmployeeRepository.save(any())).thenReturn(getEmployee());
+        EmployeeDto employeeDto = getEmployeeDto();
+        employeeDto.setFirstname("New firstname");
+        Employee employee = employeeService.updateEmployee(employeeDto, getEmployee().getId());
+        assertEquals(employee.getFirstname(), employeeDto.getFirstname());
+    }
+
+    @Test
+    void findEmployeesByProgrammingLanguage() {
+        when(mockEmployeeRepository.findAll()).thenReturn(getListOfEmployee());
+        when(mockEmployeeMapper.convertTOListOfEmployeeDtoMapper(any())).thenReturn(employeeDtoList());
+        List<EmployeeDto> employeeByFilter = employeeService.findEmployeesByProgrammingLanguage(
+                "java",5, "free");
+        assertEquals(employeeByFilter.size(), 3);
+    }
+
+    @Test
+    void addCapability() {
+        when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(getEmployee()));
+        Employee employee = employeeService.addCapability(getEmployee().getId(), "C#", 4);
+        assertEquals(employee.getProgrammingLanguages().size(), 2);
+    }
+
+    @Test
+    void filterEmployeesByFramework() {
+        when(mockEmployeeRepository.findAll()).thenReturn(getListOfEmployee());
+        when(mockEmployeeMapper.convertTOListOfEmployeeDtoMapper(any())).thenReturn(employeeDtoList());
+        List<EmployeeDto> employees = employeeService.filterEmployeesByFramework("angular", 4, "free");
+        assertEquals(employees.size(), 3);
+    }
+
+    @Test
+    void changeStatusOfEmployee() {
+        when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(getEmployee()));
+        Employee employee = employeeService.changeStatusOfEmployee(getEmployee().getId(), "free");
+        assertEquals(employee.getIsFree(), true);
+    }
+
+    @Test
+    void filterEmployeesByStatus() {
+        when(mockEmployeeRepository.findAll()).thenReturn(getListOfEmployee());
+        when(mockEmployeeMapper.convertTOListOfEmployeeDtoMapper(any())).thenReturn(employeeDtoList());
+        List<EmployeeDto> employeeDtos = employeeService.filterEmployeesByStatus("free");
+        assertEquals(employeeDtos.size(), 2);
     }
 }

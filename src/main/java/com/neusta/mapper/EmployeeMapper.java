@@ -2,7 +2,6 @@ package com.neusta.mapper;
 
 
 import com.neusta.domain.Employee;
-import com.neusta.repo.EmployeeRepository;
 import com.neusta.rest.response.EmployeeDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +15,10 @@ import java.util.List;
 public class EmployeeMapper {
 
     private final ModelMapper modelMapper;
-    /*
-    private final EmployeeRepository employeeRepository;
-
-     */
 
     @Autowired
-    public EmployeeMapper(ModelMapper modelMapper,
-                          EmployeeRepository employeeRepository) {
+    public EmployeeMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        //this.employeeRepository = employeeRepository;
     }
 
     public Employee convertToEmployee(EmployeeDto employeeDto){
@@ -35,10 +28,8 @@ public class EmployeeMapper {
     }
 
     public EmployeeDto convertToEmployeeDto(Employee employee){
-        EmployeeDto newEmployeeDto = modelMapper.map(employee, EmployeeDto.class);
-        return newEmployeeDto;
+        return modelMapper.map(employee, EmployeeDto.class);
     }
-
 
     public List<EmployeeDto> convertTOListOfEmployeeDtoMapper(List<Employee> listOfEmployees) {
 
