@@ -3,6 +3,7 @@ package com.neusta.service;
 import com.neusta.domain.Employee;
 import com.neusta.domain.Framework;
 import com.neusta.domain.ProgrammingLanguage;
+import com.neusta.exception.ResourceNotFoundException;
 import com.neusta.mapper.EmployeeMapper;
 import com.neusta.repo.EmployeeRepository;
 import com.neusta.rest.response.EmployeeDto;
@@ -31,9 +32,9 @@ public class EmployeeServiceTest {
     private EmployeeService employeeService;
     @Mock
     private EmployeeRepository mockEmployeeRepository;
-
     @Mock
     private EmployeeMapper mockEmployeeMapper;
+
     public Employee generateEmployee (long id,
                                       String firstname,
                                       String lastname,
@@ -103,10 +104,14 @@ public class EmployeeServiceTest {
         when(mockEmployeeRepository.save(any())).thenReturn(getEmployee());
         Employee employee = employeeService.createEmployee(getEmployeeDto());
         assertEquals(employee.getFirstname(), getEmployee().getFirstname());
+        assertEquals(employee.getLastname(), getEmployee().getLastname());
+        assertEquals(employee.getUsername(), getEmployee().getUsername());
+        assertEquals(employee.getBirthday(), getEmployee().getBirthday());
+        assertEquals(employee.getMobile(), getEmployee().getMobile());
+        assertEquals(employee.getEmail(), getEmployee().getEmail());
         assertEquals(employee.getIsFree(), getEmployee().getIsFree());
         assertEquals(employee.getProgrammingLanguages().size(), getEmployee().getProgrammingLanguages().size());
         assertEquals(employee.getFrameworks().size(), getEmployee().getFrameworks().size());
-        assertEquals(employee.getEmail(), getEmployee().getEmail());
     }
 
     @Test
@@ -117,9 +122,9 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void givenEmployeeId_whenNotFoundId_thenResourceNoFoundException() {
+    void givenEmployeeId_whenNotFoundId_thenResourceNotFoundException() {
         when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(null));
-        assertThrows(RuntimeException.class, ()-> employeeService.findEmployeeById(12L));
+        assertThrows(ResourceNotFoundException.class, ()-> employeeService.findEmployeeById(12L));
     }
 
     @Test
@@ -128,6 +133,7 @@ public class EmployeeServiceTest {
         when(mockEmployeeMapper.convertTOListOfEmployeeDtoMapper(any())).thenReturn(employeeDtoList());
         assertEquals(getListOfEmployee().size(), 3);
     }
+
     @Test
     void givenEmployeeId_whenDeleteEmployeeById_IdFound_thenEmployeeDeleteCorrectly() {
         when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(getEmployee()));
@@ -140,7 +146,7 @@ public class EmployeeServiceTest {
     @Test
     void givenEmployeeId_whenDeleteEmployeeById_IdNotFound_thenEmployeeNoDelete(){
         when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(null));
-        assertThrows(RuntimeException.class, ()-> employeeService.deleteEmployeeById(9L));
+        assertThrows(ResourceNotFoundException.class, ()-> employeeService.deleteEmployeeById(9L));
     }
 
     @Test
@@ -159,14 +165,21 @@ public class EmployeeServiceTest {
         when(mockEmployeeMapper.convertTOListOfEmployeeDtoMapper(any())).thenReturn(employeeDtoList());
         List<EmployeeDto> employeeByFilter = employeeService.findEmployeesByProgrammingLanguage(
                 "java",5, "free");
-        assertEquals(employeeByFilter.size(), 3);
+        assertEquals(employeeByFilter.size(), 2);
     }
 
     @Test
-    void addCapability() {
+    void addCapabilityAsProgrammingLanguage() {
         when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(getEmployee()));
-        Employee employee = employeeService.addCapability(getEmployee().getId(), "C#", 4);
+        Employee employee = employeeService.addCapabilityAsProgrammingLanguage(getEmployee().getId(), "C#", 4);
         assertEquals(employee.getProgrammingLanguages().size(), 2);
+    }
+
+    @Test
+    void addCapabilityAsFramework() {
+        when(mockEmployeeRepository.findById(any())).thenReturn(Optional.ofNullable(getEmployee()));
+        Employee employee = employeeService.addCapabilityAsFramework(getEmployee().getId(), "react", 4);
+        assertEquals(employee.getFrameworks().size(), 2);
     }
 
     @Test
@@ -174,7 +187,7 @@ public class EmployeeServiceTest {
         when(mockEmployeeRepository.findAll()).thenReturn(getListOfEmployee());
         when(mockEmployeeMapper.convertTOListOfEmployeeDtoMapper(any())).thenReturn(employeeDtoList());
         List<EmployeeDto> employees = employeeService.filterEmployeesByFramework("angular", 4, "free");
-        assertEquals(employees.size(), 3);
+        assertEquals(employees.size(), 2);
     }
 
     @Test

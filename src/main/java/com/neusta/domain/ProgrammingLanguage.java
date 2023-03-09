@@ -14,14 +14,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProgrammingLanguage {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_id", nullable = false)
     private Long id;
-
     @Column(name = "programming_language")
     private String programmingLanguage;
     private int workExperience;
-
     public ProgrammingLanguage(String programming_language, int amountOfExperience) {
         this.programmingLanguage = programming_language;
         this.workExperience = amountOfExperience;

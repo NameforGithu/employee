@@ -13,30 +13,23 @@ import java.util.List;
 
 @Component
 public class EmployeeMapper {
-
     private final ModelMapper modelMapper;
-
     @Autowired
     public EmployeeMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
-
-    public Employee convertToEmployee(EmployeeDto employeeDto){
+    public Employee convertToEmployee(EmployeeDto employeeDto) {
         Employee newEmployee = modelMapper.map(employeeDto, Employee.class);
         newEmployee.setCreationTime(LocalDateTime.now());
         return newEmployee;
     }
-
-    public EmployeeDto convertToEmployeeDto(Employee employee){
+    public EmployeeDto convertToEmployeeDto(Employee employee) {
         return modelMapper.map(employee, EmployeeDto.class);
     }
-
     public List<EmployeeDto> convertTOListOfEmployeeDtoMapper(List<Employee> listOfEmployees) {
-
         EmployeeDto employeeDto;
-
-        List<EmployeeDto>  employeeDtoList = new ArrayList<>();
-        for (Employee employee: listOfEmployees) {
+        List<EmployeeDto> employeeDtoList = new ArrayList<>();
+        for (Employee employee : listOfEmployees) {
             employeeDto = convertToEmployeeDto(employee);
             employeeDtoList.add(employeeDto);
         }

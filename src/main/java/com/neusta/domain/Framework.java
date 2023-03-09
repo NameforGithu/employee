@@ -13,7 +13,7 @@ import lombok.Setter;
 @Table(name = "frameworks")
 public class Framework {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "framework_id", nullable = false)
     private Long id;
     @Column(name = "framework")

@@ -1,6 +1,5 @@
 package com.neusta.rest.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.neusta.domain.ForeignLanguages;
 import com.neusta.domain.Framework;
 import com.neusta.domain.ProgrammingLanguage;
@@ -10,9 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDto {
-
     private Long id;
     @NotNull
     @Column(name = "firstname", nullable = false, length = 50)
@@ -32,14 +31,12 @@ public class EmployeeDto {
     @Column(name = "username", nullable = false, length = 30)
     private String username;
     @NotNull
+    @Email(message = "invalid email")
     @Column(name = "email", nullable = false, length = 30)
     private String email;
-
     @Column(name = "mobile", nullable = false, length = 30)
+    @Pattern(regexp="(^$|[0-9]{10})")
     private String mobile;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime creationTime;
-
     @Column(name = "programming_languages")
     List<ProgrammingLanguage> programmingLanguages;
     @Column(name = "framework")
@@ -55,13 +52,8 @@ public class EmployeeDto {
     private List <ForeignLanguages> foreignLanguages;
     @Column(name = "employee_status")
     private boolean isFree = true;
-
     public boolean getIsFree() {
         return isFree;
     }
-
-    public void setIsFree(boolean free) {
-        isFree = free;
-    }
-
+    public void setIsFree(boolean free) {isFree = free;}
 }
